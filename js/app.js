@@ -28,6 +28,7 @@ var octopus = {
   init: function(){
     model.currentCat = model.cats[0];
     viewCat.init();
+    viewCatList.init();
     // render the cat-view and the cat-view-list here
   },
 
@@ -87,6 +88,31 @@ var viewCatList = {
     this.render();
   },
   render: function(){
+    var cats, i, element;
+    // get all the cats from the octopus
+    cats = octopus.getAllCats();
+
+    for (var i = 0; i < cats.length; i++){
+      currentCat = cats[i];
+      console.log(cats.length);
+      console.log("2omak");
+
+      // create an element for every cat in the model
+      element = document.createElement('li');
+      element.textContent = currentCat.name;
+
+      element.addEventListener('click', (function(catCopy){
+        return function() {
+          // whatever element we click on the list, we assign it to catCopy.
+          // After doing so, the octopus controller sets the current cat to the
+          // cat we just clicked
+          octopus.setCurrentCat(catCopy);
+          catView.render();
+        }
+      })(currentCat));
+
+      this.catListElement.appendChild(element);
+    }
 
 
   }
